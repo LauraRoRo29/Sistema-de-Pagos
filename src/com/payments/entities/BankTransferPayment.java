@@ -3,76 +3,76 @@ package com.payments.entities;
 public class BankTransferPayment extends Payment {
 
     // Atributos de transferencia bancaria
-    private String numeroCuenta;
-    private String banco;
-    private double saldoDisponible;
+    private String accountNumber;
+    private String bank;
+    private double availableBalance;
 
     // Constructor
-    public BankTransferPayment(long id, double monto, String estado, String numeroCuenta, String banco, double saldoDisponible) {
+    public BankTransferPayment(long id, double amount, String status, String accountNumber, String bank, double availableBalance) {
 
         // Atributos comunes
-        super(id, monto, estado);
+        super(id, amount, status);
 
-        // Inicializa atributos específicos de transferencia
-        this.numeroCuenta = numeroCuenta;
-        this.banco = banco;
-        this.saldoDisponible = saldoDisponible;
+        // Inicia atributos de transferencia
+        this.accountNumber = accountNumber;
+        this.bank = bank;
+        this.availableBalance = availableBalance;
     }//constructor
 
     // Getters
-    public String getNumeroCuenta() {
-        return numeroCuenta;
-    }//getNumeroCuenta
+    public String getAccountNumber() {
+        return accountNumber;
+    }//getAccountNumber
 
-    public String getBanco() {
-        return banco;
-    }//getBanco
+    public String getBank() {
+        return bank;
+    }//getBank
 
-    public double getSaldoDisponible() {
-        return saldoDisponible;
-    }//getSaldoDisponible
+    public double getAvailableBalance() {
+        return availableBalance;
+    }//getAvailableBalance
 
     // Setter del saldo
-    public void setSaldoDisponible(double saldoDisponible) {
-        this.saldoDisponible = saldoDisponible;
-    }//setSaldoDisponible
+    public void setAvailableBalance(double availableBalance) {
+        this.availableBalance = availableBalance;
+    }//setAvailableBalance
 
     // Metodo para transferencia bancaria
     @Override
     public void processPayment() {
 
         // Verifica datos obligatorios
-        if (numeroCuenta == null || numeroCuenta.isEmpty()) {
-            setEstado("REJECTED");
+        if (accountNumber == null || accountNumber.isEmpty()) {
+            setStatus("REJECTED");
 
             System.out.println("Transferencia rechazada.");
             System.out.println("El número de cuenta no es válido.");
 
-        } else if (banco == null || banco.isEmpty()) {
-            setEstado("REJECTED");
+        } else if (bank == null || bank.isEmpty()) {
+            setStatus("REJECTED");
 
             System.out.println("Transferencia rechazada.");
             System.out.println("El banco no es válido.");
 
-        } else if (getMonto() <= 0) {
-            setEstado("REJECTED");
+        } else if (getAmount() <= 0) {
+            setStatus("REJECTED");
 
             System.out.println("Transferencia rechazada.");
             System.out.println("El monto debe ser mayor que cero.");
 
-        } else if (saldoDisponible >= getMonto()) {
-            saldoDisponible = saldoDisponible - getMonto();
+        } else if (availableBalance >= getAmount()) {
+            availableBalance = availableBalance - getAmount();
 
-            setEstado("APPROVED");
+            setStatus("APPROVED");
 
             System.out.println("Transferencia aprobada.");
-            System.out.println("Banco: " + banco);
-            System.out.println("Cuenta: " + numeroCuenta);
-            System.out.println("Monto transferido: $" + getMonto());
-            System.out.println("Saldo restante: $" + saldoDisponible);
+            System.out.println("Banco: " + bank);
+            System.out.println("Cuenta: " + accountNumber);
+            System.out.println("Monto transferido: $" + getAmount());
+            System.out.println("Saldo restante: $" + availableBalance);
 
         } else {
-            setEstado("REJECTED");
+            setStatus("REJECTED");
 
             System.out.println("Transferencia rechazada.");
             System.out.println("Saldo disponible insuficiente.");
@@ -83,11 +83,11 @@ public class BankTransferPayment extends Payment {
     public String toString() {
         return "BankTransferPayment{" +
                 "id=" + getId() +
-                ", monto=$" + getMonto() +
-                ", estado='" + getEstado() + '\'' +
-                ", numeroCuenta='" + numeroCuenta + '\'' +
-                ", banco='" + banco + '\'' +
-                ", saldoDisponible=$" + saldoDisponible +
+                ", amount=$" + getAmount() +
+                ", status='" + getStatus() + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", bank='" + bank + '\'' +
+                ", availableBalance=$" + availableBalance +
                 '}';
     }//toString
 }//class BankTransferPayment

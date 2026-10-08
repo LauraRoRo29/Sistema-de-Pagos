@@ -4,17 +4,17 @@ public class PayPalPayment extends Payment {
 
     // Atributos de PayPal
     private String email;
-    private double saldoDisponible;
+    private double availableBalance;
 
     // Constructor
-    public PayPalPayment(long id, double monto, String estado, String email, double saldoDisponible) {
+    public PayPalPayment(long id, double amount, String status, String email, double availableBalance) {
 
         // Atributos comunes
-        super(id, monto, estado);
+        super(id, amount, status);
 
-        // Inicia  atributos propios de PayPal
+        // Inicia  atributos de PayPal
         this.email = email;
-        this.saldoDisponible = saldoDisponible;
+        this.availableBalance = availableBalance;
     }// constructor
 
     // Getters
@@ -22,14 +22,14 @@ public class PayPalPayment extends Payment {
         return email;
     }//getEmail
 
-    public double getSaldoDisponible() {
-        return saldoDisponible;
-    }//getSaldoDisponible
+    public double getAvailableBalance() {
+        return availableBalance;
+    }//getAvailableBalance
 
-    // Setter para saldoDisponible
-    public void setSaldoDisponible(double saldoDisponible) {
-        this.saldoDisponible = saldoDisponible;
-    }//setSaldoDisponible
+    // Setter para availableBalance
+    public void setAvailableBalance(double availableBalance) {
+        this.availableBalance = availableBalance;
+    }//setAvailableBalance
 
     // Metodo para PayPal
     @Override
@@ -37,43 +37,43 @@ public class PayPalPayment extends Payment {
 
         // Valida que el correo no esté vacío
         if (email == null || email.isEmpty()) {
-            setEstado("REJECTED");
+            setStatus("REJECTED");
 
             System.out.println("Pago PayPal rechazado.");
             System.out.println("El correo electrónico no es válido.");
 
-        } else if (getMonto() <= 0) {
-            setEstado("REJECTED");
+        } else if (getAmount() <= 0) {
+            setStatus("REJECTED");
 
             System.out.println("Pago PayPal rechazado.");
             System.out.println("El monto debe ser mayor que cero.");
 
-        } else if (saldoDisponible >= getMonto()) {
-            saldoDisponible = saldoDisponible - getMonto();
+        } else if (availableBalance >= getAmount()) {
+            availableBalance = availableBalance - getAmount();
 
-            setEstado("APPROVED");
+            setStatus("APPROVED");
 
             System.out.println("Pago PayPal aprobado.");
             System.out.println("Correo: " + email);
-            System.out.println("Monto pagado: $" + getMonto());
-            System.out.println("Saldo restante: $" + saldoDisponible);
+            System.out.println("Monto pagado: $" + getAmount());
+            System.out.println("Saldo restante: $" + availableBalance);
 
         } else {
-            setEstado("REJECTED");
+            setStatus("REJECTED");
 
             System.out.println("Pago PayPal rechazado.");
             System.out.println("Saldo disponible insuficiente.");
         }
-    }
+    }//processPayment
 
     @Override
     public String toString() {
         return "PayPalPayment{" +
                 "id=" + getId() +
-                ", monto=$" + getMonto() +
-                ", estado='" + getEstado() + '\'' +
+                ", amount=$" + getAmount() +
+                ", status='" + getStatus() + '\'' +
                 ", email='" + email + '\'' +
-                ", saldoDisponible=$" + saldoDisponible +
+                ", availableBalance=$" + availableBalance +
                 '}';
-    }// toStri
+    }// toString
 } //class PayPalPayment
