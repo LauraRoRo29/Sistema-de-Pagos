@@ -1,13 +1,30 @@
+<div align="center">
+
 # Sistema de Procesamiento de Pagos
 
+**Una solución en Java 21 orientada a objetos para la gestión de transacciones electrónicas.**
+
+![Proyecto](https://img.shields.io/badge/Proyecto-POO_Java_21-orange?style=for-the-badge)
+![Estado](https://img.shields.io/badge/Estado-Completado-brightgreen?style=for-the-badge)
+
+
+
+---
+</div>
+
 ## Participantes
-- Manuel Rodríguez - Interfaz Refundable y excepciones personalizadas (InsufficientFundsException, InvalidPaymentException)
-- Laura Rojas - Clase abstracta Payment y CreditCardPayment
-- Efraín Sagols - PayPalPayment y BankTransferPayment
-- Gonzalo Vargas - PaymentManager, PaymentsApp y pruebas de integración
+
+| Integrante | Rol / Módulos Asignados | Componentes Desarrollados |
+| :--- | :--- | :--- |
+| **Manuel Rodríguez** | Interfaz y Excepciones Personalizadas | `Refundable`, `InsufficientFundsException`, `InvalidPaymentException` |
+| **Laura Rojas** | Clase Abstracta y Tarjetas | `Payment`, `CreditCardPayment` |
+| **Efraín Sagols** | Métodos de Pago Digitales y Bancarios | `PayPalPayment`, `BankTransferPayment` |
+| **Gonzalo Vargas** | Gestión, Ejecución y Pruebas | `PaymentManager`, `PaymentsApp` |
 
 ## Descripción del Proyecto
 Este proyecto es una aplicación desarrollada en Java que simula un sistema de procesamiento de pagos para una tienda en línea. El objetivo principal es aplicar los conceptos de la Programación Orientada a Objetos (POO), incluyendo encapsulamiento, abstracción, herencia, polimorfismo, interfaces, colecciones y manejo de excepciones personalizadas para controlar la lógica de negocio.
+
+> La arquitectura del sistema permite extender nuevos métodos de pago sin modificar la lógica existente del gestor de pagos (`PaymentManager`), cumpliendo con los principios de diseño orientado a objetos.
 
 ## Estructura del Proyecto
 ```text
@@ -28,8 +45,13 @@ src/
         └── PaymentsApp.java
 
 ```
-
 ## Tecnologías Utilizadas
+
+![Java](https://img.shields.io/badge/Java_21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05033?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-121011?style=for-the-badge&logo=github&logoColor=white)
+
 - Lenguaje: Java (JDK 21)
 - IDE: IntelliJ IDEA
 - Control de Versiones: Git y GitHub
