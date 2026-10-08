@@ -1,38 +1,45 @@
 package com.payments.entities;
 
+import com.payments.exceptions.InsufficientFundsException;
+import com.payments.exceptions.InvalidPaymentException;
+
 public abstract class Payment {
-
-    // Atributos de la clase
-    private long id;
+    private String id;
     private double amount;
-    private String status;
+    private PaymentStatus status;
 
-    //Constructor
-    public Payment(long id, double amount, String status) {
+    public Payment(String id, double amount) throws InvalidPaymentException {
+        if (amount <= 0) {
+            throw new InvalidPaymentException("El monto del pago debe ser mayor a 0.");
+        }
+        if (id == null || id.trim().isEmpty()) {
+            throw new InvalidPaymentException("El ID del pago no puede estar vacío.");
+        }
         this.id = id;
         this.amount = amount;
-        this.status = status;
-    }//constructor Payment
+        this.status = PaymentStatus.PENDING;
+    }
 
-    //Getters
-    public long getId() {
+    public abstract void processPayment() throws InsufficientFundsException, InvalidPaymentException;
+
+    public String getId() {
         return id;
-    }//getId
+    }
 
     public double getAmount() {
         return amount;
-    }//getAmount
+    }
 
-    //Getters y Setters para el estado
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return status;
-    }//getStatus
+    }
 
-    public void setStatus(String status) {
+    protected void setStatus(PaymentStatus status) {
         this.status = status;
-    }//setStatus
+    }
 
-    public abstract void processPayment();
-
-
-}// class Payment
+    @Override
+    public String toString() {
+        return String.format("Pago [ID: %s | Monto: $%.2f | Estado: %s]", id, amount, status.getDescription());
+    }
+}
