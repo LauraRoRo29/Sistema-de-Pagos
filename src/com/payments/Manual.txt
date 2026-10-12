@@ -23,3 +23,34 @@ Las Excepciones Personalizadas (InsufficientFundsException e InvalidPaymentExcep
 Se activa y lanza cuando el sistema detecta que la cuenta o método de pago no cuenta con el saldo o límite suficiente para cubrir el monto solicitado.
 2. InvalidPaymentException:
 Se encarga de reportar errores cuando algún dato fundamental del pago (como identificadores vacíos o montos incorrectos) no cumple con las reglas de validación establecidas.
+
+//Parte 4
+PaymentManager.java
+La clase PaymentManager se ubica en el paquete com.payments.entities y es la responsable de administrar todos los pagos del sistema. Almacena los pagos en una colección de tipo ArrayList<Payment>, declarada como List<Payment> y privada para respetar la encapsulación: ninguna otra clase puede modificar la lista directamente, solo a través de sus métodos.
+Métodos principales:
+registerPayment(Payment payment): Registra un pago en la colección. Valida que el pago no sea nulo antes de agregarlo.
+showPayments(): Muestra en consola todos los pagos registrados. Si no hay pagos, informa que la lista está vacía.
+findById(String id): Busca un pago por su ID recorriendo la colección. Si no lo encuentra, regresa null.
+getTotalProcessed(): Calcula el monto total de los pagos con estado APPROVED. Los pagos rechazados o reembolsados no se suman.
+getPaymentCount(): Regresa la cantidad de pagos registrados.
+
+Uso del polimorfismo en PaymentManager:
+PaymentManager trabaja únicamente con referencias de tipo Payment y no depende de CreditCardPayment, PayPalPayment ni BankTransferPayment. Gracias a esto, la misma lista puede guardar cualquier método de pago, y al mostrarlos cada objeto usa su propia versión de toString(). Si en el futuro se agrega un nuevo método de pago (por ejemplo, criptomonedas), PaymentManager no necesita modificarse.
+
+Decisión de diseño:
+Se decidió registrar todos los pagos, incluso los rechazados, para conservar un historial completo de las transacciones con su estado. El total procesado solo considera los pagos aprobados.
+
+PaymentsApp.java
+La clase PaymentsApp se ubica en el paquete com.payments y contiene el método main, que es el punto de entrada del programa. Su función es demostrar e integrar el trabajo de todo el equipo ejecutando las siguientes operaciones:
+1. Crear diferentes métodos de pago con datos ficticios (tarjeta de crédito, PayPal y transferencia bancaria).
+2. Procesar pagos exitosos.
+3. Intentar procesar pagos que no pueden realizarse (por saldo o límite insuficiente).
+4. Manejar las excepciones InsufficientFundsException e InvalidPaymentException mediante bloques try-catch, para que el programa no termine inesperadamente.
+5. Registrar los pagos en PaymentManager.
+6. Mostrar los pagos registrados.
+7. Buscar un pago por su ID, incluyendo la búsqueda de un ID que no existe.
+8. Realizar un reembolso sobre un pago cuyo método implementa la interfaz Refundable. Antes de reembolsar se verifica con instanceof que el método de pago tenga esa capacidad.
+9. Mostrar un resumen con la cantidad de pagos y el total aprobado.
+
+Pruebas de integración:
+PaymentsApp funciona como prueba de integración del sistema, ya que en ella se usan juntas las clases de todos los integrantes: Payment y sus subclases, el enum PaymentStatus, la interfaz Refundable, las excepciones personalizadas y PaymentManager. Al ejecutarla se comprueba que todas las partes se comunican correctamente.
