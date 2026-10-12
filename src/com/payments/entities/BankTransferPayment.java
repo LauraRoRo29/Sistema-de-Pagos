@@ -1,5 +1,8 @@
 package com.payments.entities;
 
+import com.payments.exceptions.InsufficientFundsException;
+import com.payments.exceptions.InvalidPaymentException;
+
 public class BankTransferPayment extends Payment {
 
     // Atributos de transferencia bancaria
@@ -8,7 +11,7 @@ public class BankTransferPayment extends Payment {
     private double availableBalance;
 
     // Constructor
-    public BankTransferPayment(long id, double amount, String status, String accountNumber, String bank, double availableBalance) {
+    public BankTransferPayment(long id, double amount, String status, String accountNumber, String bank, double availableBalance) throws InvalidPaymentException {
 
         // Atributos comunes
         super(id, amount, status);
