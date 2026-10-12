@@ -1,5 +1,8 @@
 package com.payments.entities;
 
+import com.payments.exceptions.InsufficientFundsException;
+import com.payments.exceptions.InvalidPaymentException;
+
 public class BankTransferPayment extends Payment {
 
     // Atributos de transferencia bancaria
@@ -8,10 +11,10 @@ public class BankTransferPayment extends Payment {
     private double availableBalance;
 
     // Constructor
-    public BankTransferPayment(long id, double amount, String status, String accountNumber, String bank, double availableBalance) {
+    public BankTransferPayment(String id, double amount, String accountNumber, String bank, double availableBalance) throws InvalidPaymentException {
 
         // Atributos comunes
-        super(id, amount, status);
+        super(id, amount);
 
         // Inicia atributos de transferencia
         this.accountNumber = accountNumber;
@@ -39,23 +42,23 @@ public class BankTransferPayment extends Payment {
 
     // Metodo para transferencia bancaria
     @Override
-    public void processPayment() {
+    public void processPayment() throws InsufficientFundsException, InvalidPaymentException {
 
         // Verifica datos obligatorios
         if (accountNumber == null || accountNumber.isEmpty()) {
-            setStatus("REJECTED");
+            setStatus(PaymentStatus.REJECTED);
 
             System.out.println("Transferencia rechazada.");
             System.out.println("El número de cuenta no es válido.");
 
         } else if (bank == null || bank.isEmpty()) {
-            setStatus("REJECTED");
+            setStatus(PaymentStatus.REJECTED);
 
             System.out.println("Transferencia rechazada.");
             System.out.println("El banco no es válido.");
 
         } else if (getAmount() <= 0) {
-            setStatus("REJECTED");
+            setStatus(PaymentStatus.REJECTED);
 
             System.out.println("Transferencia rechazada.");
             System.out.println("El monto debe ser mayor que cero.");
@@ -63,7 +66,7 @@ public class BankTransferPayment extends Payment {
         } else if (availableBalance >= getAmount()) {
             availableBalance = availableBalance - getAmount();
 
-            setStatus("APPROVED");
+            setStatus(PaymentStatus.APPROVED);
 
             System.out.println("Transferencia aprobada.");
             System.out.println("Banco: " + bank);
@@ -72,7 +75,7 @@ public class BankTransferPayment extends Payment {
             System.out.println("Saldo restante: $" + availableBalance);
 
         } else {
-            setStatus("REJECTED");
+            setStatus(PaymentStatus.REJECTED);
 
             System.out.println("Transferencia rechazada.");
             System.out.println("Saldo disponible insuficiente.");

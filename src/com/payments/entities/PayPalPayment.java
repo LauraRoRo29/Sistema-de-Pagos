@@ -1,5 +1,8 @@
 package com.payments.entities;
 
+import com.payments.exceptions.InsufficientFundsException;
+import com.payments.exceptions.InvalidPaymentException;
+
 public class PayPalPayment extends Payment {
 
     // Atributos de PayPal
@@ -7,10 +10,10 @@ public class PayPalPayment extends Payment {
     private double availableBalance;
 
     // Constructor
-    public PayPalPayment(long id, double amount, String status, String email, double availableBalance) {
+    public PayPalPayment(String id, double amount, String email, double availableBalance) throws InvalidPaymentException {
 
         // Atributos comunes
-        super(id, amount, status);
+        super(id, amount);
 
         // Inicia  atributos de PayPal
         this.email = email;
@@ -33,17 +36,17 @@ public class PayPalPayment extends Payment {
 
     // Metodo para PayPal
     @Override
-    public void processPayment() {
+    public void processPayment() throws InsufficientFundsException, InvalidPaymentException {
 
         // Valida que el correo no esté vacío
         if (email == null || email.isEmpty()) {
-            setStatus("REJECTED");
+            setStatus(PaymentStatus.REJECTED);
 
             System.out.println("Pago PayPal rechazado.");
             System.out.println("El correo electrónico no es válido.");
 
         } else if (getAmount() <= 0) {
-            setStatus("REJECTED");
+            setStatus(PaymentStatus.REJECTED);
 
             System.out.println("Pago PayPal rechazado.");
             System.out.println("El monto debe ser mayor que cero.");
@@ -51,7 +54,7 @@ public class PayPalPayment extends Payment {
         } else if (availableBalance >= getAmount()) {
             availableBalance = availableBalance - getAmount();
 
-            setStatus("APPROVED");
+            setStatus(PaymentStatus.APPROVED);
 
             System.out.println("Pago PayPal aprobado.");
             System.out.println("Correo: " + email);
@@ -59,7 +62,7 @@ public class PayPalPayment extends Payment {
             System.out.println("Saldo restante: $" + availableBalance);
 
         } else {
-            setStatus("REJECTED");
+            setStatus(PaymentStatus.REJECTED);
 
             System.out.println("Pago PayPal rechazado.");
             System.out.println("Saldo disponible insuficiente.");

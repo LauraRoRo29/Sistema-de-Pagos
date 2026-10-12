@@ -2,7 +2,7 @@ package com.payments.entities;
 
 public enum PaymentStatus {
     PENDING("Pendiente"),
-    APPROVED("Aprobado"),
+    APPROVED("Aprovado"),
     REJECTED("Rechazado"),
     REFUNDED("Reembolsado");
 
