@@ -1,1 +1,17 @@
 Descripción de Sistema de Pagos.
+
+
+Gestión de pagos:
+PaymentStatus.java
+La clase PaymentStatus es una enumeración (enum) ubicada en el paquete com.payments.entities. Su función principal es centralizar y estandarizar los posibles estados por los que puede atravesar una transacción dentro del sistema de pagos, evitando el uso de textos libres o cadenas de Strings propensas a errores tipográficos.
+El enum gestiona cuatro estados oficiales para las transacciones:
+PENDING: Representa un pago pendiente de procesamiento o validación ("Pendiente").
+APPROVED: Indica que la transacción se ha completado y aprobado con éxito ("Aprovado").
+REJECTED: Señala que el pago fue rechazado por el sistema o la entidad financiera ("Rechazado").
+REFUNDED: Muestra que el monto de la transacción ha sido devuelto al cliente ("Reembolsado").
+getDescription(): Método de tipo public String que retorna la descripción legible en texto plano asociada al estado actual. Es útil principalmente para la interfaz de usuario, reportes o bitácoras (logs).
+
+Implementar una enumeración como PaymentStatus.java en un proyecto de pagos es clave por razones de consistencia, seguridad y mantenimiento:
+Evita errores tipográficos: En lugar de depender de cadenas de texto libres (como escribir "Aprobado", "aprobado" o "aprobada" por accidente en distintas partes del código), el enum fuerza un conjunto de valores fijos y exactos conocidos por el compilador.
+Centraliza la lógica: Si en el futuro necesitas cambiar o agregar un estado nuevo (por ejemplo, "EN_REVISION"), solo lo modificas en un archivo en lugar de buscar por todo el proyecto dónde habías escrito texto plano.
+Facilita la lectura y el mantenimiento: Cualquier desarrollador que lea el código sabrá exactamente cuáles son los únicos estados posibles que puede asumir una transacción en la aplicación.
