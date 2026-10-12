@@ -15,3 +15,11 @@ Implementar una enumeración como PaymentStatus.java en un proyecto de pagos es 
 Evita errores tipográficos: En lugar de depender de cadenas de texto libres (como escribir "Aprobado", "aprobado" o "aprobada" por accidente en distintas partes del código), el enum fuerza un conjunto de valores fijos y exactos conocidos por el compilador.
 Centraliza la lógica: Si en el futuro necesitas cambiar o agregar un estado nuevo (por ejemplo, "EN_REVISION"), solo lo modificas en un archivo en lugar de buscar por todo el proyecto dónde habías escrito texto plano.
 Facilita la lectura y el mantenimiento: Cualquier desarrollador que lea el código sabrá exactamente cuáles son los únicos estados posibles que puede asumir una transacción en la aplicación.
+
+La Interfaz Refundable: Funciona como un contrato o etiqueta de habilitación. Las clases de pago que la implementan adquieren la capacidad formal de procesar devoluciones o reembolsos de dinero dentro de la plataforma.
+
+Las Excepciones Personalizadas (InsufficientFundsException e InvalidPaymentException): Son clases de errores controlados (checked exceptions) que heredan de la clase base Exception. Su función es interrumpir el flujo normal e informar de manera específica cuando ocurre un problema de negocio:
+1. InsufficientFundsException: 
+Se activa y lanza cuando el sistema detecta que la cuenta o método de pago no cuenta con el saldo o límite suficiente para cubrir el monto solicitado.
+2. InvalidPaymentException:
+Se encarga de reportar errores cuando algún dato fundamental del pago (como identificadores vacíos o montos incorrectos) no cumple con las reglas de validación establecidas.
