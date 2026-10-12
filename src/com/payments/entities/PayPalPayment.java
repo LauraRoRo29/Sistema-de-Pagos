@@ -35,6 +35,7 @@ public class PayPalPayment extends Payment {
     @Override
     public void processPayment() {
 
+<<<<<<< Updated upstream
         // Valida que el correo no esté vacío
         if (email == null || email.isEmpty()) {
             setStatus("REJECTED");
@@ -47,6 +48,13 @@ public class PayPalPayment extends Payment {
 
             System.out.println("Pago PayPal rechazado.");
             System.out.println("El monto debe ser mayor que cero.");
+=======
+        // Valida que el correo no esté vacío y que tenga @
+        if (email == null || email.isEmpty() || !email.contains("@")) {
+            setStatus(PaymentStatus.REJECTED);
+
+            throw new InvalidPaymentException("Pago PayPal rechazado. El correo electrónico no es válido.");
+>>>>>>> Stashed changes
 
         } else if (availableBalance >= getAmount()) {
             availableBalance = availableBalance - getAmount();
@@ -61,19 +69,12 @@ public class PayPalPayment extends Payment {
         } else {
             setStatus("REJECTED");
 
-            System.out.println("Pago PayPal rechazado.");
-            System.out.println("Saldo disponible insuficiente.");
+            throw new InsufficientFundsException("Pago PayPal rechazado. Saldo disponible insuficiente.");
         }
     }//processPayment
 
     @Override
     public String toString() {
-        return "PayPalPayment{" +
-                "id=" + getId() +
-                ", amount=$" + getAmount() +
-                ", status='" + getStatus() + '\'' +
-                ", email='" + email + '\'' +
-                ", availableBalance=$" + availableBalance +
-                '}';
+        return super.toString() + " [PayPal: " + email + " | Saldo: $" + availableBalance + "]";
     }// toString
 } //class PayPalPayment

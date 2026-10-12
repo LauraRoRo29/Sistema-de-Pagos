@@ -48,12 +48,12 @@ public class BankTransferPayment extends Payment {
         if (accountNumber == null || accountNumber.isEmpty()) {
             setStatus("REJECTED");
 
-            System.out.println("Transferencia rechazada.");
-            System.out.println("El número de cuenta no es válido.");
+            throw new InvalidPaymentException("Transferencia rechazada. El número de cuenta no es válido.");
 
         } else if (bank == null || bank.isEmpty()) {
             setStatus("REJECTED");
 
+<<<<<<< Updated upstream
             System.out.println("Transferencia rechazada.");
             System.out.println("El banco no es válido.");
 
@@ -62,6 +62,9 @@ public class BankTransferPayment extends Payment {
 
             System.out.println("Transferencia rechazada.");
             System.out.println("El monto debe ser mayor que cero.");
+=======
+            throw new InvalidPaymentException("Transferencia rechazada. El banco no es válido.");
+>>>>>>> Stashed changes
 
         } else if (availableBalance >= getAmount()) {
             availableBalance = availableBalance - getAmount();
@@ -77,20 +80,12 @@ public class BankTransferPayment extends Payment {
         } else {
             setStatus("REJECTED");
 
-            System.out.println("Transferencia rechazada.");
-            System.out.println("Saldo disponible insuficiente.");
+            throw new InsufficientFundsException("Transferencia rechazada. Saldo disponible insuficiente.");
         }
     }//processPayment
 
     @Override
     public String toString() {
-        return "BankTransferPayment{" +
-                "id=" + getId() +
-                ", amount=$" + getAmount() +
-                ", status='" + getStatus() + '\'' +
-                ", accountNumber='" + accountNumber + '\'' +
-                ", bank='" + bank + '\'' +
-                ", availableBalance=$" + availableBalance +
-                '}';
+        return super.toString() + " [Banco: " + bank + " | Cuenta: " + accountNumber + " | Saldo: $" + availableBalance + "]";
     }//toString
 }//class BankTransferPayment
